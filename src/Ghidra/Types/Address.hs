@@ -1,7 +1,10 @@
-module Ghidra.Types.Address where
+module Ghidra.Types.Address
+  ( module Ghidra.Types.Address
+  , module Exports
+  ) where
 
 import Ghidra.Prelude
-
+import Data.BinaryAnalysis as Exports (AddressSpace(..), Address(..))
 
 type AddressSpaceMap = HashMap AddressSpaceId AddressSpace
 
@@ -9,13 +12,3 @@ newtype AddressSpaceId = AddressSpaceId Int32
   deriving (Generic)
   deriving newtype (Eq, Ord, Read, Show, Num, Hashable)
 
-data AddressSpace = AddressSpace
-  { ptrSize :: Int
-  , addressableUnitSize :: Int
-  , name :: Text
-  } deriving (Eq, Ord, Show, Generic)
-
-data Address = Address
-  { space :: AddressSpace
-  , offset :: Word64 -- multiply by addressableUnitSize to get byte offset
-  } deriving (Eq, Ord, Show, Generic)

@@ -5,7 +5,6 @@ import Ghidra.Prelude hiding (force, get)
 import qualified Language.Java as Java
 import Ghidra.Util (maybeNullCall, suppressOut)
 import qualified Ghidra.Types as J
-import qualified Data.BinaryAnalysis as BA
 import qualified Foreign.JNI as JNI
 
 
@@ -155,14 +154,14 @@ getListing gs = do
 
 -- | Adds address to image base.
 -- Only use this with PIE binaries.
-mkAddressBased :: GhidraState -> BA.Address -> IO J.Address
+mkAddressBased :: GhidraState -> Word64 -> IO J.Address
 mkAddressBased gs addr = do
   prg <- getProgram gs
   baseAddr :: J.Address <- Java.call prg "getImageBase" >>= JNI.newGlobalRef
   Java.call baseAddr "add" (fromIntegral addr :: Int64)
 
 -- | Makes a new address
-mkAddress :: GhidraState -> BA.Address -> IO J.Address
+mkAddress :: GhidraState -> Word64 -> IO J.Address
 mkAddress gs addr = do
   prg <- getProgram gs
   baseAddr :: J.Address <- Java.call prg "getImageBase" >>= JNI.newGlobalRef
